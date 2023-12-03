@@ -44,18 +44,18 @@ namespace aoc_2023
         public static void OutputChristmasTree()
         {
             string christmasTree =
-                "              |\n" +
-                @"             \|/" + "\n" +
-                "            --*--\n" +
-                "             >O<\n" +
-                "            >O<<<\n" +
-                "           >>o>>*<\n" +
-                "          >o<<<o<<<\n" +
-                "         >>@>*<<O<<<\n" +
-                "        >o>>@>>>o>o<<\n" +
-                "       >*>>*<o<@<o<<<<\n" +
-                "      >o>o<<<O<*>>*>>O<\n" +
-                "         _ __| |__ _";
+                "                                            |\n" +
+                @"                                           \|/" + "\n" +
+                "                                          --*--\n" +
+                "                                           >O<\n" +
+                "                                          >O<<<\n" +
+                "                                         >>o>>*<\n" +
+                "                                        >o<<<o<<<\n" +
+                "                                       >>@>*<<O<<<\n" +
+                "                                      >o>>@>>>o>o<<\n" +
+                "                                     >*>>*<o<@<o<<<<\n" +
+                "                                    >o>o<<<O<*>>*>>O<\n" +
+                "                                       _ __| |__ _";
 
             for (int i = 0; i < christmasTree.Length; i++)
             {
@@ -103,7 +103,7 @@ namespace aoc_2023
             Console.ResetColor();
             Console.Write("\n\n");
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("     ADVENT OF CODE 2023 \n");
+            Console.WriteLine("                                   ADVENT OF CODE 2023 \n");
             Console.ResetColor();
         }
     }
