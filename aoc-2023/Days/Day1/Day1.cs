@@ -2,7 +2,7 @@
 
 namespace aoc_2023.Days.Day1
 {
-    public class Day1
+    internal class Day1
     {
         public void SolvePart1()
         {
