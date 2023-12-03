@@ -15,7 +15,7 @@ namespace aoc_2023
         /// <para>Note: The text files must be copied to the output directory. In order to do this, right-click on the text file in the Solution Explorer, and select Properties. In
         /// the Advanced dropdown, set Copy to Output Directory to "copy always".</para>
         /// </summary>
-        public static StreamReader GetInputDataPath(string fileName)
+        public static StreamReader GetInputData(string fileName)
         {
             return new StreamReader(new FileStream(Path.Combine(AppContext.BaseDirectory, $"Data\\{fileName.Replace(".txt","")}.txt"), FileMode.Open, FileAccess.Read));
         }
@@ -85,7 +85,7 @@ namespace aoc_2023
                         Console.ForegroundColor = ConsoleColor.DarkGreen;
                         break;
                     case '@':
-                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
                         break;
                     case 'o':
                         Console.ForegroundColor = ConsoleColor.DarkYellow;

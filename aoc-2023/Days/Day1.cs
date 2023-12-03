@@ -1,12 +1,12 @@
 ﻿using static aoc_2023.Helpers;
 
-namespace aoc_2023.Days.Day1
+namespace aoc_2023.Days
 {
     internal class Day1
     {
         public void SolvePart1()
         {
-            StreamReader streamReader = GetInputDataPath("day1-calibration");
+            StreamReader streamReader = GetInputData("day1-calibration");
 
             int sum = 0;
 
@@ -15,7 +15,7 @@ namespace aoc_2023.Days.Day1
                 string? read = streamReader.ReadLine();
                 if (!string.IsNullOrEmpty(read))
                 {
-                    string numbers = new string(read.Where(Char.IsDigit).ToArray());
+                    string numbers = new string(read.Where(char.IsDigit).ToArray());
                     sum += Convert.ToInt32(numbers.First().ToString() + numbers.Last().ToString());
                 }
             }
@@ -25,7 +25,7 @@ namespace aoc_2023.Days.Day1
 
         public void SolvePart2()
         {
-            StreamReader streamReader = GetInputDataPath("day1-calibration");
+            StreamReader streamReader = GetInputData("day1-calibration");
 
             Dictionary<string, int> validNumbers = new Dictionary<string, int>()
             {
@@ -43,7 +43,7 @@ namespace aoc_2023.Days.Day1
                     string lastNum = string.Empty;
                     int firstNumPos = 1000000;
                     int lastNumPos = -2;
-                    
+
                     foreach (string number in validNumbers.Keys)
                     {
                         // First check word values.
