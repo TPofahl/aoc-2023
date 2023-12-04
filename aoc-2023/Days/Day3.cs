@@ -5,13 +5,14 @@ namespace aoc_2023.Days
 {
     internal class Day3
     {
+        public int Sum { get; set; } = 0;
+
         public void SolvePart1()
         {
             StreamReader streamReader = GetInputData("day3-engine-schematic");
             List<(int Row, int Number, int Index)> rows = new List<(int, int, int)>();
             List<(int Row, string Character, int Index)> characters = new List<(int, string, int)>();
             int rowNumber = 0;
-            int sum = 0;
 
             while (!streamReader.EndOfStream)
             {
@@ -42,29 +43,13 @@ namespace aoc_2023.Days
                         // check for special characters next to numbers in the first row.
                         foreach (var character in firstRowCharacters)
                         {
-                            if (character.Index == number.Index - 1 || character.Index == number.Index + number.Number.ToString().Length + 1)
-                            {
-                                if (tempRowNumbers.Contains(number))
-                                {
-                                    sum += number.Number;
-                                    tempRowNumbers.Remove(number);
-                                    break;
-                                }
-                            }
+                            if (CheckCharacterSameRow(character, number, tempRowNumbers, Sum)) break;
                         }
                         if (tempRowNumbers.Count <= 0) break;
                         // check for special characters in second row.
                         foreach (var character in secondRowCharacters)
                         {
-                            if (number.Index - 1 <= character.Index && number.Index + number.Number.ToString().Length + 2 >= character.Index)
-                            {
-                                if (tempRowNumbers.Contains(number))
-                                {
-                                    sum += number.Number;
-                                    tempRowNumbers.Remove(number);
-                                    break;
-                                }
-                            }
+                            if (CheckCharacter(character, number, tempRowNumbers, Sum)) break;
                         }
                     }
                 }
@@ -73,7 +58,6 @@ namespace aoc_2023.Days
                     // check for valid numbers, based on special characters above/between/below the previous read row.
                     var currentRowNumbers = rows.Where(x => x.Row == rowNumber - 1).ToList();
                     var tempRowNumbers = rows.Where(x => x.Row == rowNumber - 1).ToList();
-
                     var upperRowCharacters = characters.Where(x => x.Row == rowNumber - 2).ToList();
                     var currentRowCharacters = characters.Where(x => x.Row == rowNumber - 1).ToList();
                     var lowerRowCharacters = characters.Where(x => x.Row == rowNumber).ToList();
@@ -83,43 +67,19 @@ namespace aoc_2023.Days
                         // upper.
                         foreach (var character in upperRowCharacters)
                         {
-                            if (number.Index - 1 <= character.Index && number.Index + number.Number.ToString().Length >= character.Index)
-                            {
-                                if (tempRowNumbers.Contains(number))
-                                {
-                                    sum += number.Number;
-                                    tempRowNumbers.Remove(number);
-                                    break;
-                                }
-                            }
+                            if (CheckUpperOrLowerCharacter(character, number, tempRowNumbers, Sum)) break;
                         }
                         if (tempRowNumbers.Count <= 0) break;
                         // middle.
                         foreach (var character in currentRowCharacters)
                         {
-                            if (character.Index == number.Index - 1 || character.Index == number.Index + number.Number.ToString().Length)
-                            {
-                                if (tempRowNumbers.Contains(number))
-                                {
-                                    sum += number.Number;
-                                    tempRowNumbers.Remove(number);
-                                    break;
-                                }
-                            }
+                            if (CheckCharacterSameRow(character, number, tempRowNumbers, Sum)) break;
                         }
                         if (tempRowNumbers.Count <= 0) break;
                         // lower.
                         foreach (var character in lowerRowCharacters)
                         {
-                            if (number.Index - 1 <= character.Index && number.Index + number.Number.ToString().Length >= character.Index)
-                            {
-                                if (tempRowNumbers.Contains(number))
-                                {
-                                    sum += number.Number;
-                                    tempRowNumbers.Remove(number);
-                                    break;
-                                }
-                            }
+                            if (CheckUpperOrLowerCharacter(character, number, tempRowNumbers, Sum)) break;
                         }
                     }
                 }
@@ -135,34 +95,60 @@ namespace aoc_2023.Days
                 // check for special characters next to numbers in the second to last row.
                 foreach (var character in secondToLastRowCharacters)
                 {
-                    if (number.Index - 1 <= character.Index && number.Index + number.Number.ToString().Length + 2 >= character.Index)
-                    {
-                        if (lastTempRowNumbers.Contains(number))
-                        {
-                            sum += number.Number;
-                            lastTempRowNumbers.Remove(number);
-                            break;
-                        }
-                    }
+                    if (CheckCharacter(character, number, lastTempRowNumbers, Sum)) break;
                 }
                 if (lastTempRowNumbers.Count <= 0) break;
                 // check for special characters in last row.
                 foreach (var character in lastRowCharacters)
                 {
-                    if (character.Index == number.Index - 1 || character.Index == number.Index + number.Number.ToString().Length)
-                    {
-                        if (lastTempRowNumbers.Contains(number))
-                        {
-                            sum += number.Number;
-                            lastTempRowNumbers.Remove(number);
-                            break;
-                        }
-                    }
+                    if (CheckCharacterSameRow(character, number, lastTempRowNumbers, Sum)) break;
                 }
             }
 
             streamReader.Close();
-            OutputSolve(3, 1, sum);
+            OutputSolve(3, 1, Sum);
+        }
+
+        private bool CheckCharacter((int Row, string Character, int Index) character, (int Row, int Number, int Index) number, List<(int Row, int Number, int Index)> tempRowNumbers, int sum)
+        {
+            if (number.Index - 1 <= character.Index && number.Index + number.Number.ToString().Length + 2 >= character.Index)
+            {
+                if (tempRowNumbers.Contains(number))
+                {
+                    Sum += number.Number;
+                    tempRowNumbers.Remove(number);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private bool CheckCharacterSameRow((int Row, string Character, int Index) character, (int Row, int Number, int Index) number, List<(int Row, int Number, int Index)> tempRowNumbers, int sum)
+        {
+            if (character.Index == number.Index - 1 || character.Index == number.Index + number.Number.ToString().Length)
+            {
+                if (tempRowNumbers.Contains(number))
+                {
+                    Sum += number.Number;
+                    tempRowNumbers.Remove(number);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private bool CheckUpperOrLowerCharacter((int Row, string Character, int Index) character, (int Row, int Number, int Index) number, List<(int Row, int Number, int Index)> tempRowNumbers, int sum)
+        {
+            if (number.Index - 1 <= character.Index && number.Index + number.Number.ToString().Length >= character.Index)
+            {
+                if (tempRowNumbers.Contains(number))
+                {
+                    Sum += number.Number;
+                    tempRowNumbers.Remove(number);
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }
