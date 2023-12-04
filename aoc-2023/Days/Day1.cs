@@ -19,7 +19,7 @@ namespace aoc_2023.Days
                     sum += Convert.ToInt32(numbers.First().ToString() + numbers.Last().ToString());
                 }
             }
-
+            streamReader.Close();
             OutputSolve(1, 1, sum);
         }
 
@@ -87,7 +87,7 @@ namespace aoc_2023.Days
                     sum += Convert.ToInt32(firstNum + lastNum);
                 }
             }
-
+            streamReader.Close();
             OutputSolve(1, 2, sum);
         }
     }

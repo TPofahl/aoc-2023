@@ -51,7 +51,7 @@ namespace aoc_2023.Days
                     }
                 }
             }
-
+            streamReader.Close();
             OutputSolve(2, 1, sum);
         }
 
@@ -92,7 +92,7 @@ namespace aoc_2023.Days
                     sum += (fewestRed * fewestGreen * fewestBlue);
                 }
             }
-
+            streamReader.Close();
             OutputSolve(2, 2, sum);
         }
     }
