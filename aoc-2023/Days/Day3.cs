@@ -5,6 +5,13 @@ namespace aoc_2023.Days
 {
     internal class Day3
     {
+        internal class Symbol()
+        {
+            public string SpecialCharacter { get; set; } = string.Empty;
+            public List<string> LinkedNumbers { get; set; } = new List<string>();
+            public int Index { get; set; } = -1;
+            public bool IsGear { get; set; } = false;
+        }
         public int Sum { get; set; } = 0;
 
         public void SolvePart1()
@@ -107,6 +114,128 @@ namespace aoc_2023.Days
 
             streamReader.Close();
             OutputSolve(3, 1, Sum);
+        }
+
+        public void SolvePart2()
+        {
+            StreamReader streamReader = GetInputData("day3-engine-schematic");
+            List<string> schematic = new List<string>();
+            List<Symbol> symbols = new List<Symbol>();
+            string symbolRegexPattern = @"[*+$@%#_!&=/-]+";
+            string numberRegexPattern = @"\d+";
+            int totalLines = 0;
+            int count = 0;
+            int sum = 0;
+
+            while (!streamReader.EndOfStream)
+            {
+                schematic.Add(streamReader.ReadLine());
+                totalLines++;
+            }
+            streamReader.Close();
+
+            foreach (var line in schematic)
+            {
+                if (count == 0)
+                {
+                    // Find the symbols in row 1, and process
+                    foreach (Match symbol in Regex.Matches(line, symbolRegexPattern))
+                    {
+                        if (symbol.Success)
+                        {
+                            Symbol character = new Symbol()
+                            { 
+                                SpecialCharacter = symbol.Value, 
+                                Index = symbol.Index,
+                                IsGear = symbol.Value == "*" ? true : false
+                            };
+                            //check if number is touching character on same line
+                            foreach (Match number in Regex.Matches(schematic[0], numberRegexPattern))
+                            {
+                                if (character.Index == number.Index - 1 || character.Index == number.Index + number.Length)
+                                    character.LinkedNumbers.Add(number.Value);
+                            }
+                            //check if number is touching character on the line below
+                            foreach (Match number in Regex.Matches(schematic[1], numberRegexPattern))
+                            {
+                                if (number.Index - 1 <= character.Index && number.Index + number.Length >= character.Index)
+                                    character.LinkedNumbers.Add(number.Value);
+                            }
+                            symbols.Add(character);
+                        }
+                    }
+                }
+                else
+                {
+                    // Find numbers related to the symbol in the row current row, above and below.
+                    foreach (Match symbol in Regex.Matches(line, symbolRegexPattern))
+                    {
+                        if (symbol.Success)
+                        {
+                            Symbol character = new Symbol()
+                            {
+                                SpecialCharacter = symbol.Value,
+                                Index = symbol.Index,
+                                IsGear = symbol.Value == "*" ? true : false
+                            };
+                            //check if number is touching character on the line above
+                            foreach (Match number in Regex.Matches(schematic[count - 1], numberRegexPattern))
+                            {
+                                if (number.Index - 1 <= character.Index && number.Index + number.Length >= character.Index)
+                                    character.LinkedNumbers.Add(number.Value);
+                            }
+                            //check if number is touching character on same line
+                            foreach (Match number in Regex.Matches(schematic[count], numberRegexPattern))
+                            {
+                                if (character.Index == number.Index - 1 || character.Index == number.Index + number.Length)
+                                    character.LinkedNumbers.Add(number.Value);
+                            }
+                            //check if number is touching character on the line below
+                            foreach (Match number in Regex.Matches(schematic[count + 1], numberRegexPattern))
+                            {
+                                if (number.Index - 1 <= character.Index && number.Index + number.Length >= character.Index)
+                                    character.LinkedNumbers.Add(number.Value);
+                            }
+                            symbols.Add(character);
+                        }
+                    }
+                }
+                count++;
+            }
+            // Check the last row for special characters, and their numbers above/on the same line.
+            foreach (Match symbol in Regex.Matches(schematic[schematic.Count - 1], symbolRegexPattern))
+            {
+                if (symbol.Success)
+                {
+                    Symbol character = new Symbol()
+                    {
+                        SpecialCharacter = symbol.Value,
+                        Index = symbol.Index,
+                        IsGear = symbol.Value == "*" ? true : false
+                    };
+                    //check if number is touching character on the line above
+                    foreach (Match number in Regex.Matches(schematic[count - 1], numberRegexPattern))
+                    {
+                        if (number.Index - 1 <= character.Index && number.Index + number.Length >= character.Index)
+                            character.LinkedNumbers.Add(number.Value);
+                    }
+                    //check if number is touching character on same line
+                    foreach (Match number in Regex.Matches(schematic[count], numberRegexPattern))
+                    {
+                        if (character.Index == number.Index - 1 || character.Index == number.Index + number.Length)
+                            character.LinkedNumbers.Add(number.Value);
+                    }
+                    symbols.Add(character);
+                }
+            }
+
+            // Find the total
+            foreach (var symbol in symbols)
+            {
+                if (symbol.IsGear && symbol.LinkedNumbers.Count == 2)
+                    sum += Convert.ToInt32(symbol.LinkedNumbers[0]) * Convert.ToInt32(symbol.LinkedNumbers[1]);
+            }
+            OutputSolve(3, 2, sum);
         }
 
         private bool CheckCharacterSameRow((int Row, string Character, int Index) character, (int Row, int Number, int Index) number, List<(int Row, int Number, int Index)> tempRowNumbers, int sum)

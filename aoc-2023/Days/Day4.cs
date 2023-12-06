@@ -4,7 +4,7 @@ using static aoc_2023.Helpers;
 namespace aoc_2023.Days
 {
 
-    internal class Day4
+    internal static class Day4
     {
         internal class Card()
         {
@@ -12,7 +12,7 @@ namespace aoc_2023.Days
             public List<string> Numbers { get; set; } = new List<string>();
             public List<string> WinningNumbers { get; set; } = new List<string>();
         }
-        public void SolvePart1()
+        public static void SolvePart1()
         {
             StreamReader streamReader = GetInputData("day4-scratchcards");
             string pattern = @"\d+";
@@ -46,7 +46,7 @@ namespace aoc_2023.Days
             OutputSolve(4, 1, sum);
         }
 
-        public void SolvePart2()
+        public static void SolvePart2()
         {
             StreamReader streamReader = GetInputData("day4-scratchcards");
             List<Card> cards = new List<Card>();
@@ -80,11 +80,11 @@ namespace aoc_2023.Days
 
                 List<Card> currentCards = cards.Where(x => x.CardNumber == i).ToList();
                 int matchingNumbers = 0;
-                /*
+
                 Console.ForegroundColor = ConsoleColor.DarkGreen;
                 Console.WriteLine($"num of {i} cards: {currentCards.Count}");
                 Console.ResetColor();
-                */
+
                 foreach (Card card in currentCards)
                 {
                     foreach (string number in card.Numbers)
@@ -95,7 +95,7 @@ namespace aoc_2023.Days
                                 matchingNumbers++;
                         }
                     }
-                    /*
+
                     if (matchingNumbers > 0)
                     {
                         if (i + 1 + matchingNumbers > startingCardCount)
@@ -103,7 +103,7 @@ namespace aoc_2023.Days
                         else
                             Console.WriteLine($"Card {i} has {matchingNumbers} matches, duplicating cards {i + 1} - {i + 1 + matchingNumbers}");
                     }
-                    */
+
                     // After getting total number of matches for 1 card of a particular number, make the duplicates.
                     for (int j = 1; j <= matchingNumbers; j++)
                     {
