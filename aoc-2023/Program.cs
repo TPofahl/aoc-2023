@@ -19,10 +19,13 @@ Day3 day3 = new Day3();
 day3.SolvePart2();
 day3.SolvePart1();
 
+Day4.SolvePart1();
+Day4.SolvePart2();
 */
 var sw = new Stopwatch();
 sw.Start();
-// day4.SolvePart1();
-Day4.SolvePart2();
+
+Day5.SolvePart1();
+
 sw.Stop();
 Console.WriteLine($"total ms: {sw.ElapsedMilliseconds}");
