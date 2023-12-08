@@ -3,7 +3,8 @@ using aoc_2023.Days;
 using System.Diagnostics;
 
 OutputChristmasTree();
-
+var stopWatch = new Stopwatch();
+stopWatch.Start();
 
 /*
 Day1 day1 = new Day1();
@@ -16,16 +17,14 @@ day2.SolvePart2();
 
 
 Day3 day3 = new Day3();
-day3.SolvePart2();
 day3.SolvePart1();
+day3.SolvePart2();
 
 Day4.SolvePart1();
 Day4.SolvePart2();
 */
-var sw = new Stopwatch();
-sw.Start();
 
 Day5.SolvePart1();
 
-sw.Stop();
-Console.WriteLine($"total ms: {sw.ElapsedMilliseconds}");
+stopWatch.Stop();
+Console.WriteLine($"total ms: {stopWatch.ElapsedMilliseconds}");

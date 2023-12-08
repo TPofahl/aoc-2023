@@ -23,7 +23,7 @@ namespace aoc_2023
         /// <summary>
         /// <para>Outputs the answer to the console.</para>
         /// </summary>
-        public static void OutputSolve(int day, int part, int solution)
+        public static void OutputSolve(int day, int part, float solution)
         {
             Console.ForegroundColor = ConsoleColor.DarkGreen;
             Console.Write($"Day ");

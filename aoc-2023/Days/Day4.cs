@@ -81,9 +81,9 @@ namespace aoc_2023.Days
                 List<Card> currentCards = cards.Where(x => x.CardNumber == i).ToList();
                 int matchingNumbers = 0;
 
-                Console.ForegroundColor = ConsoleColor.DarkGreen;
+/*                Console.ForegroundColor = ConsoleColor.DarkGreen;
                 Console.WriteLine($"num of {i} cards: {currentCards.Count}");
-                Console.ResetColor();
+                Console.ResetColor();*/
 
                 foreach (Card card in currentCards)
                 {
@@ -96,13 +96,13 @@ namespace aoc_2023.Days
                         }
                     }
 
-                    if (matchingNumbers > 0)
+/*                    if (matchingNumbers > 0)
                     {
                         if (i + 1 + matchingNumbers > startingCardCount)
                             Console.WriteLine($"Card {i} has {matchingNumbers} matches, duplicating cards {i + 1} - {startingCardCount}");
                         else
                             Console.WriteLine($"Card {i} has {matchingNumbers} matches, duplicating cards {i + 1} - {i + 1 + matchingNumbers}");
-                    }
+                    }*/
 
                     // After getting total number of matches for 1 card of a particular number, make the duplicates.
                     for (int j = 1; j <= matchingNumbers; j++)
