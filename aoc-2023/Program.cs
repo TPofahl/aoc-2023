@@ -7,7 +7,6 @@ var stopWatch = new Stopwatch();
 stopWatch.Start();
 
 /*
-*/
 Day1 day1 = new Day1();
 day1.SolvePart1();
 day1.SolvePart2();
@@ -26,6 +25,9 @@ Day4.SolvePart2();
 
 Day5.SolvePart1();
 Day5.SolvePart2();
+*/
+Day6.SolvePart1();
+Day6.SolvePart2();
 
 stopWatch.Stop();
 Console.WriteLine($"total ms: {stopWatch.ElapsedMilliseconds}");
