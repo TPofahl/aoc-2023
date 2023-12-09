@@ -13,18 +13,18 @@ namespace aoc_2023.Days
 
         private class MapRow
         {
-            public float DesinationRangeStart { get; set; }
-            public float SourceRangeStart { get; set; }
-            public float RangeLength { get; set; }
+            public double DesinationRangeStart { get; set; }
+            public double SourceRangeStart { get; set; }
+            public double RangeLength { get; set; }
         }
 
         public static void SolvePart1()
         {
             StreamReader streamReader = GetInputData("day5-almanac");
             List<Map> mapList = new List<Map>();
-            List<float> seedList = new List<float>();
+            List<double> seedList = new List<double>();
             Map newMap = new Map();
-            float lowest = 1000000000000000;
+            double lowest = 1000000000000000;
 
             while (!streamReader.EndOfStream)
             {
@@ -64,13 +64,12 @@ namespace aoc_2023.Days
             streamReader.Close();
             mapList.Add(newMap);
             // process maps.
-            string firstMap = mapList[0].Name;
-            float[] results = new float[seedList.Count];
+            double[] results = new double[seedList.Count];
             foreach (var map in mapList)
             {
                 int count = 0;
                 // process first map
-                if (map.Name == firstMap)
+                if (map.Name == mapList[0].Name)
                 {
                     foreach (var seed in seedList)
                     {
@@ -85,30 +84,22 @@ namespace aoc_2023.Days
                             results[count] = seed;
                         count++;
                     }
-                    OutputLine(map, results);
+                    // OutputLine(map, results);
                 }
                 // process all other maps.
                 else
                 {
-                    float[] currentResults = new float[seedList.Count];
-                    for (int i = 0; i < results.Length; i++)
-                    {
-                        currentResults[i] = results[i];
-                    }
-                    foreach (var currentResult in currentResults)
+                    foreach (var result in results)
                     {
                         foreach (var mapRow in map.MapRows)
                         {
                             // find if in range.
-                            if (mapRow.SourceRangeStart <= currentResult && mapRow.SourceRangeStart + mapRow.RangeLength - 1 >= currentResult)
-                                currentResults[count] = currentResult - mapRow.SourceRangeStart + mapRow.DesinationRangeStart;
+                            if (mapRow.SourceRangeStart <= result && mapRow.SourceRangeStart + mapRow.RangeLength - 1 >= result)
+                                results[count] = result - mapRow.SourceRangeStart + mapRow.DesinationRangeStart;
                         }
-                        // if no ranges match, assign to desination.
-                        if (results[count] != currentResults[count])
-                            results[count] = currentResults[count];
                         count++;
                     }
-                    OutputLine(map, results);
+                    // OutputLine(map, results);
                 }
             }
             // find lowest
@@ -120,7 +111,7 @@ namespace aoc_2023.Days
             OutputSolve(5, 1, lowest);
         }
 
-        private static void OutputLine(Map map, float[] results)
+        private static void OutputLine(Map map, double[] results)
         {
             Console.WriteLine(map.Name + " ");
             var lastResult = results.Last();
