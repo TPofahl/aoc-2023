@@ -24,7 +24,8 @@ Day4.SolvePart1();
 Day4.SolvePart2();
 */
 
-Day5.SolvePart1();
+// Day5.SolvePart1();
+Day5.SolvePart2();
 
 stopWatch.Stop();
 Console.WriteLine($"total ms: {stopWatch.ElapsedMilliseconds}");
