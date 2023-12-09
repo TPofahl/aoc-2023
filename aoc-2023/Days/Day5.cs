@@ -1,5 +1,4 @@
-﻿using System.Text.RegularExpressions;
-using static aoc_2023.Helpers;
+﻿using static aoc_2023.Helpers;
 
 namespace aoc_2023.Days
 {
@@ -63,50 +62,40 @@ namespace aoc_2023.Days
             }
             streamReader.Close();
             mapList.Add(newMap);
-            // process maps.
             double[] results = new double[seedList.Count];
             foreach (var map in mapList)
             {
                 int count = 0;
-                // process first map
-                if (map.Name == mapList[0].Name)
+                if (map.Name == mapList[0].Name) // process first map
                 {
                     foreach (var seed in seedList)
                     {
                         foreach (var mapRow in map.MapRows)
                         {
-                            // find if in range.
-                            if (mapRow.SourceRangeStart <= seed && mapRow.SourceRangeStart + mapRow.RangeLength - 1 >= seed)
+                            if (mapRow.SourceRangeStart <= seed && mapRow.SourceRangeStart + mapRow.RangeLength - 1 >= seed) // find if in range.
                                 results[count] = seed - mapRow.SourceRangeStart + mapRow.DesinationRangeStart;
                         }
-                        // if no ranges match, assign to desination.
-                        if (results[count] == 0)
+                        if (results[count] == 0) // if no ranges match, assign to desination.
                             results[count] = seed;
                         count++;
                     }
-                    // OutputLine(map, results);
                 }
-                // process all other maps.
-                else
+                else // process all other maps.
                 {
                     foreach (var result in results)
                     {
                         foreach (var mapRow in map.MapRows)
                         {
-                            // find if in range.
-                            if (mapRow.SourceRangeStart <= result && mapRow.SourceRangeStart + mapRow.RangeLength - 1 >= result)
+                            if (mapRow.SourceRangeStart <= result && mapRow.SourceRangeStart + mapRow.RangeLength - 1 >= result) // find if in range.
                                 results[count] = result - mapRow.SourceRangeStart + mapRow.DesinationRangeStart;
                         }
                         count++;
                     }
-                    // OutputLine(map, results);
                 }
             }
-            // find lowest
-            foreach (var result in results)
+            foreach (var result in results) // find lowest
             {
-                if (result < lowest)
-                    lowest = result;
+                if (result < lowest) lowest = result;
             }
             OutputSolve(5, 1, lowest);
         }
@@ -128,19 +117,14 @@ namespace aoc_2023.Days
                     {
                         var splitRead = read.Split(": ");
                         var seeds = splitRead[1].Split(" ");
-
-                        // read seed ranges in pairs, and create seeds.
-                        for (int i = 0; i <= seeds.Length - 1; i+=2)
+                        for (int i = 0; i <= seeds.Length - 1; i+=2) // read seed ranges in pairs, and create seeds.
                         {
-                            //Console.WriteLine($"amount of seeds to create: {Math.Abs(Convert.ToInt64(seeds[i]) - Convert.ToInt64(seeds[i + 1]))}");
-                            //Console.WriteLine($"first seed to create: {seeds[i]} , last seed to create: {Convert.ToInt64(seeds[i]) + Convert.ToInt64(seeds[i + 1]) - 1}");
                             for (int j = 0; j <= Convert.ToInt64(seeds[i + 1]) - 1; j++)
                             {
                                 seedList.Add(Convert.ToInt64(seeds[i]) + j);
                             }
                         }
                         Console.WriteLine($"Total seeds created: {seedList.Count}");
-
                     }
                     else if (read.Contains("map:"))
                     {
@@ -164,73 +148,45 @@ namespace aoc_2023.Days
                 }
             }
             streamReader.Close();
-
-
-
-
-
             mapList.Add(newMap);
-            // process maps.
             double[] results = new double[seedList.Count];
             foreach (var map in mapList)
             {
                 int count = 0;
-                // process first map
-                if (map.Name == mapList[0].Name)
+                if (map.Name == mapList[0].Name) // process first map
                 {
                     Console.WriteLine($"{map.Name} Processing");
                     foreach (var seed in seedList)
                     {
                         foreach (var mapRow in map.MapRows)
                         {
-                            // find if in range.
-                            if (mapRow.SourceRangeStart <= seed && mapRow.SourceRangeStart + mapRow.RangeLength - 1 >= seed)
+                            if (mapRow.SourceRangeStart <= seed && mapRow.SourceRangeStart + mapRow.RangeLength - 1 >= seed) // find if in range.
                                 results[count] = seed - mapRow.SourceRangeStart + mapRow.DesinationRangeStart;
                         }
-                        // if no ranges match, assign to desination.
-                        if (results[count] == 0)
+                        if (results[count] == 0) // if no ranges match, assign to desination.
                             results[count] = seed;
                         count++;
                     }
-                    // OutputLine(map, results);
                 }
-                // process all other maps.
-                else
+                else // process all other maps.
                 {
                     Console.WriteLine($"{map.Name} Processing");
                     foreach (var result in results)
                     {
                         foreach (var mapRow in map.MapRows)
                         {
-                            // find if in range.
-                            if (mapRow.SourceRangeStart <= result && mapRow.SourceRangeStart + mapRow.RangeLength - 1 >= result)
+                            if (mapRow.SourceRangeStart <= result && mapRow.SourceRangeStart + mapRow.RangeLength - 1 >= result) // find if in range.
                                 results[count] = result - mapRow.SourceRangeStart + mapRow.DesinationRangeStart;
                         }
                         count++;
                     }
-                    // OutputLine(map, results);
                 }
             }
-            // find lowest
-            foreach (var result in results)
+            foreach (var result in results) // find lowest
             {
-                if (result < lowest)
-                    lowest = result;
+                if (result < lowest) lowest = result;
             }
             OutputSolve(5, 2, lowest);
-        }
-
-        private static void OutputLine(Map map, double[] results)
-        {
-            Console.WriteLine(map.Name + " ");
-            var lastResult = results.Last();
-            foreach (var result in results)
-            {
-                Console.Write(result);
-                if (result != lastResult)
-                    Console.Write(" , ");
-            }
-            Console.WriteLine();
         }
     }
 }
