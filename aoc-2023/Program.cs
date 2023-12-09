@@ -7,6 +7,7 @@ var stopWatch = new Stopwatch();
 stopWatch.Start();
 
 /*
+*/
 Day1 day1 = new Day1();
 day1.SolvePart1();
 day1.SolvePart2();
@@ -22,7 +23,6 @@ day3.SolvePart2();
 
 Day4.SolvePart1();
 Day4.SolvePart2();
-*/
 
 Day5.SolvePart1();
 Day5.SolvePart2();

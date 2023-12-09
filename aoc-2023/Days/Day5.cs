@@ -65,14 +65,13 @@ namespace aoc_2023.Days
             double[] results = new double[seedList.Count];
             foreach (var map in mapList)
             {
-                int count = 0;
                 if (map.Name == mapList[0].Name) // process first map
                 {
-                    ProcessMap(seedList, map, results, count);
+                    ProcessMap(seedList, map, results);
                 }
                 else
                 {
-                    ProcessOtherMaps(map, results, count);
+                    ProcessOtherMaps(map, results);
                 }
             }
             foreach (var result in results) // find lowest
@@ -134,14 +133,13 @@ namespace aoc_2023.Days
             double[] results = new double[seedList.Count];
             foreach (var map in mapList)
             {
-                int count = 0;
                 if (map.Name == mapList[0].Name) // process first map
                 {
-                    ProcessMap(seedList, map, results, count);
+                    ProcessMap(seedList, map, results);
                 }
                 else
                 {
-                    ProcessOtherMaps(map, results, count);
+                    ProcessOtherMaps(map, results);
                 }
             }
             foreach (var result in results) // find lowest
@@ -151,8 +149,9 @@ namespace aoc_2023.Days
             OutputSolve(5, 2, lowest);
         }
 
-        private static void ProcessMap(List<double> seedList, Map map, double[] results, int count)
+        private static void ProcessMap(List<double> seedList, Map map, double[] results)
         {
+            int count = 0;
             Console.WriteLine($"{map.Name} Processing");
             foreach (var seed in seedList)
             {
@@ -167,8 +166,9 @@ namespace aoc_2023.Days
             }
         }
 
-        private static void ProcessOtherMaps(Map map, double[] results, int count)
+        private static void ProcessOtherMaps(Map map, double[] results)
         {
+            int count = 0;
             Console.WriteLine($"{map.Name} Processing");
             foreach (var result in results)
             {
