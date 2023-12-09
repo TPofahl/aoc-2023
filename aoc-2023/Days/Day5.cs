@@ -68,29 +68,11 @@ namespace aoc_2023.Days
                 int count = 0;
                 if (map.Name == mapList[0].Name) // process first map
                 {
-                    foreach (var seed in seedList)
-                    {
-                        foreach (var mapRow in map.MapRows)
-                        {
-                            if (mapRow.SourceRangeStart <= seed && mapRow.SourceRangeStart + mapRow.RangeLength - 1 >= seed) // find if in range.
-                                results[count] = seed - mapRow.SourceRangeStart + mapRow.DesinationRangeStart;
-                        }
-                        if (results[count] == 0) // if no ranges match, assign to desination.
-                            results[count] = seed;
-                        count++;
-                    }
+                    ProcessMap(seedList, map, results, count);
                 }
-                else // process all other maps.
+                else
                 {
-                    foreach (var result in results)
-                    {
-                        foreach (var mapRow in map.MapRows)
-                        {
-                            if (mapRow.SourceRangeStart <= result && mapRow.SourceRangeStart + mapRow.RangeLength - 1 >= result) // find if in range.
-                                results[count] = result - mapRow.SourceRangeStart + mapRow.DesinationRangeStart;
-                        }
-                        count++;
-                    }
+                    ProcessOtherMaps(map, results, count);
                 }
             }
             foreach (var result in results) // find lowest
@@ -155,31 +137,11 @@ namespace aoc_2023.Days
                 int count = 0;
                 if (map.Name == mapList[0].Name) // process first map
                 {
-                    Console.WriteLine($"{map.Name} Processing");
-                    foreach (var seed in seedList)
-                    {
-                        foreach (var mapRow in map.MapRows)
-                        {
-                            if (mapRow.SourceRangeStart <= seed && mapRow.SourceRangeStart + mapRow.RangeLength - 1 >= seed) // find if in range.
-                                results[count] = seed - mapRow.SourceRangeStart + mapRow.DesinationRangeStart;
-                        }
-                        if (results[count] == 0) // if no ranges match, assign to desination.
-                            results[count] = seed;
-                        count++;
-                    }
+                    ProcessMap(seedList, map, results, count);
                 }
-                else // process all other maps.
+                else
                 {
-                    Console.WriteLine($"{map.Name} Processing");
-                    foreach (var result in results)
-                    {
-                        foreach (var mapRow in map.MapRows)
-                        {
-                            if (mapRow.SourceRangeStart <= result && mapRow.SourceRangeStart + mapRow.RangeLength - 1 >= result) // find if in range.
-                                results[count] = result - mapRow.SourceRangeStart + mapRow.DesinationRangeStart;
-                        }
-                        count++;
-                    }
+                    ProcessOtherMaps(map, results, count);
                 }
             }
             foreach (var result in results) // find lowest
@@ -187,6 +149,36 @@ namespace aoc_2023.Days
                 if (result < lowest) lowest = result;
             }
             OutputSolve(5, 2, lowest);
+        }
+
+        private static void ProcessMap(List<double> seedList, Map map, double[] results, int count)
+        {
+            Console.WriteLine($"{map.Name} Processing");
+            foreach (var seed in seedList)
+            {
+                foreach (var mapRow in map.MapRows)
+                {
+                    if (mapRow.SourceRangeStart <= seed && mapRow.SourceRangeStart + mapRow.RangeLength - 1 >= seed) // find if in range.
+                        results[count] = seed - mapRow.SourceRangeStart + mapRow.DesinationRangeStart;
+                }
+                if (results[count] == 0) // if no ranges match, assign to desination.
+                    results[count] = seed;
+                count++;
+            }
+        }
+
+        private static void ProcessOtherMaps(Map map, double[] results, int count)
+        {
+            Console.WriteLine($"{map.Name} Processing");
+            foreach (var result in results)
+            {
+                foreach (var mapRow in map.MapRows)
+                {
+                    if (mapRow.SourceRangeStart <= result && mapRow.SourceRangeStart + mapRow.RangeLength - 1 >= result) // find if in range.
+                        results[count] = result - mapRow.SourceRangeStart + mapRow.DesinationRangeStart;
+                }
+                count++;
+            }
         }
     }
 }
