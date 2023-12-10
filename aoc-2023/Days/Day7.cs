@@ -23,12 +23,13 @@ namespace aoc_2023.Days
             {
                 string[] read = streamReader.ReadLine().Split(" ");
                 Hand hand = new Hand()
-                { 
-                    Cards = read[0], 
+                {
+                    Cards = read[0],
                     Bid = Convert.ToInt32(read[1]),
                     Type = GetType(read[0]),
                     Rank = 0
                 };
+
                 hands.Add(hand);
             }
             streamReader.Close();
@@ -78,7 +79,7 @@ namespace aoc_2023.Days
             List<Hand> hands = new List<Hand>();
             string strengths = "AKQT98765432J";
             int rankNumber = 0;
-            int result = 0;
+            double result = 0;
             while (!streamReader.EndOfStream)
             {
                 string[] read = streamReader.ReadLine().Split(" ");
@@ -86,7 +87,7 @@ namespace aoc_2023.Days
                 {
                     Cards = read[0],
                     Bid = Convert.ToInt32(read[1]),
-                    Type = GetTypeWithJoker(read[0]),
+                    Type = GetType(read[0], true),
                     Rank = 0
                 };
                 hands.Add(hand);
@@ -142,7 +143,7 @@ namespace aoc_2023.Days
             }
             return 0;
         }
-        private static string GetType(string cards)
+        private static string GetType(string cards, bool cardsHaveJokers = false)
         {
             List<string> characters = new List<string>();
             int highestMatch = 1;
@@ -153,7 +154,11 @@ namespace aoc_2023.Days
             for (int i = 1; i < characters.Count; i++)
             {
                 int matches = characters.Count(x => x.Equals(characters[i]));
-                if (matches == 5)
+
+                if (cardsHaveJokers && characters[i] != "J")
+                    matches += characters.Count(x => x.Equals("J"));
+
+                if (matches == 5 || characters.Count(x => x.Equals("J")) == 4)
                     return CardTypes.FiveKind.ToString();
                 else if (matches == 4)
                     return CardTypes.FourKind.ToString();
@@ -163,7 +168,28 @@ namespace aoc_2023.Days
                     List<string> chars = new List<string>(characters);
                     foreach (string c in characters)
                     {
-                        if (chars.Count(x => x.Equals(c)) == 3)
+                        if (cardsHaveJokers)
+                        {
+                            int count = 0;
+                            if (c != "J")
+                            {
+                                count = chars.Count(x => x.Equals(c)) + chars.Count(x => x.Equals("J"));
+                            }
+                            else
+                            {
+                                count = chars.Count(x => x.Equals(c));
+                            }
+
+                            if (count == 3)
+                            {
+                                chars.RemoveAll(x => x.Equals(c));
+                                chars.RemoveAll(x => x.Equals("J"));
+                                if (chars.Count == 2 && chars[0] == chars[1])
+                                    return CardTypes.FullHouse.ToString();
+                                else break;
+                            }
+                        }
+                        else if (chars.Count(x => x.Equals(c)) == 3)
                         {
                             chars.RemoveAll(x => x.Equals(c));
                             if (chars.Count == 2 && chars[0] == chars[1])
@@ -182,62 +208,8 @@ namespace aoc_2023.Days
                         if (chars.Count(x => x.Equals(c)) == 2)
                         {
                             chars.RemoveAll(x => x.Equals(c));
-                            pairs++;
-                        }
-                        if (pairs == 2)
-                            return CardTypes.TwoPair.ToString();
-                    }
-                }
-            }
-            return highestMatch switch
-            {
-                4 => CardTypes.FourKind.ToString(),
-                3 => CardTypes.ThreeKind.ToString(),
-                2 => CardTypes.OnePair.ToString(),
-                _ => CardTypes.HighCard.ToString()
-            };
-        }
-        private static string GetTypeWithJoker(string cards)
-        {
-            List<string> characters = new List<string>();
-            int highestMatch = 1;
-
-            foreach (char item in cards)
-                characters.Add(item.ToString());
-
-            for (int i = 1; i < characters.Count; i++)
-            {
-                int matches = characters.Count(x => x.Equals(characters[i]));
-                if (matches == 5)
-                    return CardTypes.FiveKind.ToString();
-                else if (matches == 4)
-                    return CardTypes.FourKind.ToString();
-                else if (matches == 3) // check for full house
-                {
-                    highestMatch = matches;
-                    List<string> chars = new List<string>(characters);
-                    foreach (string c in characters)
-                    {
-                        if (chars.Count(x => x.Equals(c)) == 3)
-                        {
-                            chars.RemoveAll(x => x.Equals(c));
-                            if (chars.Count == 2 && chars[0] == chars[1])
-                                return CardTypes.FullHouse.ToString();
-                            else break;
-                        }
-                    }
-                }
-                else if (matches == 2 && matches > highestMatch) // check for two pair.
-                {
-                    List<string> chars = new List<string>(characters);
-                    int pairs = 0;
-                    highestMatch = matches;
-                    foreach (string c in characters)
-                    {
-                        if (chars.Count(x => x.Equals(c)) == 2)
-                        {
-                            chars.RemoveAll(x => x.Equals(c));
-                            pairs++;
+                            if (c != "J")
+                                pairs++;
                         }
                         if (pairs == 2)
                             return CardTypes.TwoPair.ToString();
