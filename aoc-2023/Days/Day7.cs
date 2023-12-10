@@ -158,7 +158,7 @@ namespace aoc_2023.Days
                 if (cardsHaveJokers && characters[i] != "J")
                     matches += characters.Count(x => x.Equals("J"));
 
-                if (matches == 5 || characters.Count(x => x.Equals("J")) == 4)
+                if (matches == 5 || characters.Count(x => x.Equals("J")) == 4 && cardsHaveJokers)
                     return CardTypes.FiveKind.ToString();
                 else if (matches == 4)
                     return CardTypes.FourKind.ToString();
@@ -208,7 +208,9 @@ namespace aoc_2023.Days
                         if (chars.Count(x => x.Equals(c)) == 2)
                         {
                             chars.RemoveAll(x => x.Equals(c));
-                            if (c != "J")
+                            if (cardsHaveJokers && c != "J") // check for special cases with joker, or process normal for part 1.
+                                pairs++;
+                            else
                                 pairs++;
                         }
                         if (pairs == 2)

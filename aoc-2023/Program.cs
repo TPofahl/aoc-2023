@@ -29,7 +29,7 @@ Day6.SolvePart1();
 Day6.SolvePart2();
 */
 
-// Day7.SolvePart1();
+Day7.SolvePart1();
 Day7.SolvePart2();
 
 stopWatch.Stop();
