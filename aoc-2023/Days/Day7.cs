@@ -172,13 +172,9 @@ namespace aoc_2023.Days
                         {
                             int count = 0;
                             if (c != "J")
-                            {
                                 count = chars.Count(x => x.Equals(c)) + chars.Count(x => x.Equals("J"));
-                            }
                             else
-                            {
                                 count = chars.Count(x => x.Equals(c));
-                            }
 
                             if (count == 3)
                             {
@@ -198,7 +194,7 @@ namespace aoc_2023.Days
                         }
                     }
                 }
-                else if (matches == 2 && matches > highestMatch) // check for two pair.
+                else if (matches == 2 && matches >= highestMatch) // check for two pair.
                 {
                     List<string> chars = new List<string>(characters);
                     int pairs = 0;
