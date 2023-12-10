@@ -30,6 +30,7 @@ Day6.SolvePart2();
 */
 
 Day7.SolvePart1();
+Day7.SolvePart2();
 
 stopWatch.Stop();
 Console.WriteLine($"total ms: {stopWatch.ElapsedMilliseconds}");
