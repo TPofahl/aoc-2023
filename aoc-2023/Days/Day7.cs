@@ -19,7 +19,8 @@ namespace aoc_2023.Days
         {
             StreamReader streamReader = GetInputData("day7-camel-cards");
             List<Hand> hands = new List<Hand>();
-
+            int rankNumber = 0;
+            int result = 0;
             while (!streamReader.EndOfStream)
             {
                 string[] read = streamReader.ReadLine().Split(" ");
@@ -33,38 +34,58 @@ namespace aoc_2023.Days
                 hands.Add(hand);
             }
             streamReader.Close();
+            int handCount = hands.Count;
+            rankNumber = handCount;
             // get ranks for each hand
             List<Hand> sortedHand = new List<Hand>();
-            string strengths = "AKQJT98765432";
             var cardTypes = Enum.GetValues(typeof(CardTypes));
             Array.Reverse(cardTypes);
             foreach (CardTypes cardType in cardTypes)
             {
                 var handsToSort = hands.Where(hands => hands.Type == cardType.ToString()).ToList();
-                // bubble sort.
 
-                for (int i = 0; i < handsToSort.Count - 1; i++)
+                int numOfHands = handsToSort.Count;
+                // bubble sort
+                for (int i = 0; i < numOfHands - 1; i++)
                 {
-                    for (int j = 0; j < handsToSort.Count - i - 1; j++)
+                    for (int j = 0; j < numOfHands - i - 1; j++)
                     {
-                        if (hands[j].Cards[0] > hands[j + 1].Cards[0])
+                        if (CompareHands(handsToSort[j], handsToSort[j + 1]) > 0)
                         {
-                            Hand tempHand = hands[j];
-                            hands[j] = hands[j + 1];
-                            hands[j + 1] = tempHand;
+                            Hand temp = handsToSort[j];
+                            handsToSort[j] = handsToSort[j + 1];
+                            handsToSort[j + 1] = temp;
                         }
                     }
                 }
 
-
                 foreach (Hand hand in handsToSort)
+                {
+                    hand.Rank = rankNumber;
                     sortedHand.Add(hand);
+                    rankNumber--;
+                }
             }
 
             // Each hand wins an amount equal to its bid multiplied by its rank
-            OutputSolve(7, 1, -1);
+            foreach (var hand in sortedHand)
+            {
+                result += hand.Bid * hand.Rank;
+            }
+            OutputSolve(7, 1, result);
         }
 
+        private static int CompareHands(Hand hand1, Hand hand2)
+        {
+            string strengths = "AKQJT98765432";
+            for (int i = 0; i < hand1.Cards.Length; i++)
+            {
+                int result = strengths.IndexOf(hand1.Cards[i]) - strengths.IndexOf(hand2.Cards[i]);
+                if (result != 0)
+                    return result;
+            }
+            return 0;
+        }
         private static string GetType(string cards)
         {
             List<string> characters = new List<string>();
