@@ -205,13 +205,15 @@ namespace aoc_2023.Days
                     highestMatch = matches;
                     foreach (string c in characters)
                     {
-                        if (chars.Count(x => x.Equals(c)) == 2)
+                        if (cardsHaveJokers && chars.Count(x => x.Equals(c)) == 2 && c != "J")
                         {
                             chars.RemoveAll(x => x.Equals(c));
-                            if (cardsHaveJokers && c != "J") // check for special cases with joker, or process normal for part 1.
-                                pairs++;
-                            else
-                                pairs++;
+                            pairs++;
+                        }
+                        else if (chars.Count(x => x.Equals(c)) == 2)
+                        {
+                            chars.RemoveAll(x => x.Equals(c));
+                            pairs++;
                         }
                         if (pairs == 2)
                             return CardTypes.TwoPair.ToString();
