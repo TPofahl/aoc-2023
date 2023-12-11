@@ -151,7 +151,7 @@ namespace aoc_2023.Days
                 long firstNumber = leastCommonMultiple;
                 long secondNumber = results[i];
 
-                if (firstNumber != 0 && secondNumber != 0) // cannot divide by 0 in numerator.
+                if (firstNumber != 0 && secondNumber != 0) // cannot divide by 0 in denominator.
                 {
                     while (secondNumber != 0)
                     {
